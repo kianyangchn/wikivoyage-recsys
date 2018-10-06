@@ -31,17 +31,21 @@ public class RecForSearch {
      * @return 3 recommended POIs
      */
     public static List<String> recommend(String searchedTerm) {
+        List<String> candidates = new ArrayList<>();
         searchedTerm = searchedTerm.toLowerCase();
         float[] searchedTermVector = generalVectorModel.calculateSentenceVector(Arrays.asList(searchedTerm.split(" ")));
         // city name matched
-        if (DocBase.isCity(searchedTerm))
-            return recommendForCity(searchedTerm, "", searchedTermVector);
+        if (DocBase.isCity(searchedTerm)) {
+            candidates = recommendForCity(searchedTerm, "", searchedTermVector);
+            if (candidates.size() > 0) return candidates;
+        }
         // POI name matched
-        else if (DocBase.isPoi(searchedTerm))
-            return recommendForPoi(searchedTerm);
+        if (DocBase.isPoi(searchedTerm)) {
+            candidates = recommendForPoi(searchedTerm);
+            if (candidates.size() > 0) return  candidates;
+        }
         // none of above
-        else
-            return recommendForOther(searchedTerm, searchedTermVector);
+        return recommendForOther(searchedTerm, searchedTermVector);
     }
 
     /**
@@ -134,6 +138,12 @@ public class RecForSearch {
         return candidates;
     }
 
+    /**
+     * when more than 1 listing share the same POI name, one with the highest property score is selected
+     * high property score means the POI is important to the city
+     * @param listings
+     * @return
+     */
     private static Listing selectListingsWithSameName(List<Listing> listings) {
         if (listings.size() == 1)
             return listings.get(0);
