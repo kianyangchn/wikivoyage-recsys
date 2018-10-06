@@ -6,6 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.PriorityQueue;
 
+/**
+ * Use Priority queue to keep tracking the top k element
+ * @param <T>
+ */
 public class MinHeap<T> {
 
     private PriorityQueue<Pair<T, Double>> minHeap;
