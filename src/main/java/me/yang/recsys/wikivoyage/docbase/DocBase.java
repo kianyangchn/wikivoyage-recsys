@@ -22,7 +22,9 @@ import org.slf4j.LoggerFactory;
 public class DocBase {
     private static Logger logger = LoggerFactory.getLogger(DocBase.class);
 
+    // city name index
     private static Map<String, List<Listing>> cityListingsMap = new HashMap<>();
+    // POI name index
     private static Map<String, List<Listing>> poiListingsMap = new HashMap<>();
     private static Trie cityTrie = new Trie();
     private static Trie poiTrie = new Trie();
